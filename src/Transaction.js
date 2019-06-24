@@ -101,6 +101,11 @@ const styles = theme => ({
     marginRight: theme.spacing(1),
     width: 200,
   },
+  textField1:{
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(30),
+    width: 270,
+  },
   tableWrapper: {
     overflowX: 'auto',
   },
@@ -113,8 +118,8 @@ const styles = theme => ({
   }
 });
 
-const createData = (id, contractaddr, balrupee, pgy, category) =>{
-  return { id, contractaddr, balrupee, pgy, category };
+const createData = (sender,receiver, contractaddr, balrupee, pgy, category) =>{
+  return { sender,receiver, contractaddr, balrupee, pgy, category };
 }
 
 const categories = [
@@ -145,7 +150,7 @@ class Transactions extends React.Component {
         super(props)
         this.state={
             rows :[
-                createData(1, '0x14FCF', 2000, 30.2, 'unspecified'),
+                //createData('sender_Address','receiver_address', '0x14FCF', 2000, 30.2, 'unspecified'),
      
  
    
@@ -155,7 +160,7 @@ class Transactions extends React.Component {
             receiver:'0x32450c9161553Fb50e8e5D9B0A281bb1CD58a2a7',
             sender:'0xC4ad5E50BA51a94cA71bB80E9379b382E054093d',
             category:'Rent',
-            contractAddressToBeSearched: '0x4D8078060C635c0434253228B364667554893823',
+            contractAddressToBeSearched: '',
             page:0,
             rowsPerPage:5,
             eth2inr:0,
@@ -175,12 +180,15 @@ class Transactions extends React.Component {
       await this.setEventListeners();
     }
     setEventListeners(){
-      
+      var THIS=this;
     this.props.factoryContract.events.contractCreated({
               fromBlock: 0
-              }, function(error, event){ console.log("in above ");console.log(event.returnValues.newContractAddress);
+              }, function(error, event){ console.log("in above ");console.log(event);
         //alert(event.returnValues.newContractAddress);
      // this.state.rows.append(createData(1, event.returnValues.newContractAddress, this.state.Req, 30.2, 'unspecified'));
+     THIS.setState({rows:[...THIS.state.rows,createData(event.returnValues.sender,event.returnValues.receiver,event.returnValues.newContractAddress, 
+      parseInt(event.returnValues.realrequiredPrice._hex,16),
+      parseInt(event.returnValues.realrequiredPrice._hex,16)/parseInt(event.returnValues.Vold._hex,16), event.returnValues.category)]})
       })
           .on('data', function(event){console.log('optional callback');// same results as the optional callback above
               });
@@ -231,54 +239,23 @@ class Transactions extends React.Component {
                     </h1>
                 </div>
                 <Paper className={classes.root}>
-                    <div className={classes.tableWrapper}>
-                        <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell align="right">Contract Address</TableCell>
-                                <TableCell align="right">Total Balance&nbsp;(₹)</TableCell>
-                                <TableCell align="right">PGY</TableCell>
-                                <TableCell align="right">Category</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
-                            <TableRow key={row.name}>
-                                    <TableCell>{row.id}</TableCell>
-                                    <TableCell align="right">{row.contractaddr}</TableCell>
-                                    <TableCell align="right">{row.balrupee}</TableCell>
-                                    <TableCell align="right">{row.pgy}</TableCell>
-                                    <TableCell align="right">{row.category}</TableCell>
-                                </TableRow>
-                            ))}
-
-                            {emptyRows > 0 && (
-                            <TableRow style={{ height: 48 * emptyRows }}>
-                                <TableCell colSpan={6} />
-                            </TableRow>
-                            )}
-                        </TableBody>
-                        <TableFooter>
-                            <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 25]}
-                                colSpan={3}
-                                count={rows.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                SelectProps={{
-                                inputProps: { 'aria-label': 'Rows per page' },
-                                native: true,
-                                }}
-                                onChangePage={this.handleChangePage}
-                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                ActionsComponent={TablePaginationActions}
-                            />
-                            </TableRow>
-                        </TableFooter>
-                        </Table>
-                    </div>
+                  <TextField
+                        required
+                        id="standard---placeholder"
+                        label="Search By Contract Address"
+                        value={this.state.contractAddressToBeSearched}
+                        onChange={this.handleChange('contractAddressToBeSearched')}
+                        placeholder=""
+                        className={classes.textField1}
+                        margin="normal"
+                    />
+                   <Button variant="contained" 
+                        className={classes.button}
+                        onClick={() => {this.props.search_by_ca(this.state.contractAddressToBeSearched);  }}
+                        color = "secondary"
+                    >
+                       Search
+                    </Button>
                 </Paper>
                 <Paper className={classes.root}>
                     <h1>
@@ -347,26 +324,59 @@ class Transactions extends React.Component {
                     >
                         Add new Contract
                     </Button>
-                    <TextField
-                        required
-                        id="standard---placeholder"
-                        label="Search By Contract Address"
-                        value={this.state.contractAddressToBeSearched}
-                        onChange={this.handleChange('contractAddressToBeSearched')}
-                        placeholder=""
-                        className={classes.textField}
-                        margin="normal"
-                    />
-                   <Button variant="contained" 
-                        className={classes.button}
-                        onClick={() => {this.props.search_by_ca(this.state.contractAddressToBeSearched);  }}
-                        color = "secondary"
-                    >
-                       Search
-                    </Button>
-      
                 </Paper>
-                
+                <Paper className={classes.root}>
+                    <div className={classes.tableWrapper}>
+                        <Table className={classes.table}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="center">Sender</TableCell>
+                                <TableCell align="center">Receiver</TableCell>
+                                <TableCell align="center">Contract Address</TableCell>
+                                <TableCell align="center">Total Balance&nbsp;(₹)</TableCell>
+                                <TableCell align="center">PGY</TableCell>
+                                <TableCell align="center">Category</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+                            <TableRow key={row.name}>
+                                    <TableCell align="center">{row.sender}</TableCell>
+                                    <TableCell align="center">{row.receiver}</TableCell>
+                                    <TableCell align="center">{row.contractaddr}</TableCell>
+                                    <TableCell align="center">{row.balrupee}</TableCell>
+                                    <TableCell align="center">{row.pgy}</TableCell>
+                                    <TableCell align="center">{row.category}</TableCell>
+                                </TableRow>
+                            ))}
+
+                            {emptyRows > 0 && (
+                            <TableRow style={{ height: 48 * emptyRows }}>
+                                <TableCell colSpan={6} />
+                            </TableRow>
+                            )}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                colSpan={3}
+                                count={rows.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                SelectProps={{
+                                inputProps: { 'aria-label': 'Rows per page' },
+                                native: true,
+                                }}
+                                onChangePage={this.handleChangePage}
+                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+                            />
+                            </TableRow>
+                        </TableFooter>
+                        </Table>
+                    </div>
+                </Paper>                
             </div>  
         );
     }

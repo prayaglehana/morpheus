@@ -10,12 +10,12 @@ class Main extends Component{
   constructor(props){
     super(props);
     this.state={
-      contractDetails:'0xLl4HpWb2q7ZAqvPNMSfzXpdnTmJIU3',
+      contractDetails:'',
       contractDetailsCopy:false,
       sender:'',
       receiver:'',
 
-      curPgy:'',
+      curPgy:'',  
       curRupee:'',
 
       pgy:'',
@@ -25,7 +25,7 @@ class Main extends Component{
       addPgy:'',
       addRupee: '',
 
-      dealToken:'0xLl4HpWb2q7ZAqvPNMSfzXpdnTmJIU3',
+      dealToken:'',
       dealTopic:'Flat for Rent',
       dealDuration:'8 months',
       dealDetailsCopy:false,
@@ -108,6 +108,8 @@ class Main extends Component{
   
    componentWillMount(){
     var THIS=this;
+    console.log('dealContract')
+    console.log(this.props.dealContract);
     this.props.dealContract.methods.showDetails( )
     .call({from:this.props.thisAccount},function(err,data){
       console.log('data',data);
@@ -116,6 +118,8 @@ class Main extends Component{
         receiver:data.receiver,
         securityMoney : parseInt(data.realsecurityDepositPrice._hex,16),
         Vold: parseInt(data.Vold._hex,16),
+        contractDetails : THIS.props.ca ,
+        dealToken : THIS.props.ca,
 
         rupee: parseInt(data.realrequiredPrice._hex,16),
         pgy : data.realrequiredPrice/data.Vold,
@@ -148,7 +152,8 @@ class Main extends Component{
     this.props.dealContract.events.eventaddmoney({fromBlock: 0}, function(error, event)
          {   console.log("in eventaddmoney ");console.log(event.returnValues);
           
-        THIS.setState({ Vold:parseInt(event.returnValues.Vold._hex,16), curPgy:parseInt(event.returnValues.curBalanceToken._hex,16) })
+        THIS.setState({ Vold:parseInt(event.returnValues.Vold._hex,16), curPgy:parseInt(event.returnValues.curBalanceToken._hex,16)/10000
+        ,curRupee : parseInt(event.returnValues.curBalanceToken._hex,16)*parseInt(event.returnValues.Vold._hex,16)/10000 })
          })
     
     
@@ -244,17 +249,48 @@ class Main extends Component{
         </div>
 
         <div className="add-money">
-          <div style={{flex:3,margin:8,minWidth:100}}>Deal Required Balance: {this.state.rupee} ₹ OR {this.state.pgy} PGY </div>
-          <div style={{flex:5,minWidth:350,margin:'8px auto'}}>
-            <input type="text" value={this.state.addPgy} onChange={this.handleChange} name="addPgy"/>
-            PGY
+          <div style={{flex:3,margin:8,minWidth:100}}>Deal Balance </div>
+          <div style={{flex:5,minWidth:150,margin:"8px auto"}}>
+            <div style = {{padding:5,marginLeft:10,borderRadius:5,marginBottom:7}}>
+              <b>Required Balance</b>
+            </div>
+            <div style = {{background:'#e6ffee', padding:5,marginLeft:10,borderRadius:5,marginBottom:7}}>
+              {this.state.pgy} PGY
+            </div>
+            <div >
+              <div style = {{background:'#e6ffee', padding:5,marginLeft:10,borderRadius:5}}>
+              {this.state.rupee} ₹
+              </div>
+            </div>
+          </div>
+          <div style={{flex:5,minWidth:150,margin:"8px auto"}}>
+            <div style = {{padding:5,marginLeft:10,borderRadius:5,marginBottom:7}}>
+              <b>Current Balance</b>
+            </div>
+            <div style = {{background:'#e6ffee', padding:5,marginLeft:10,borderRadius:5,marginBottom:7}}>
+              {this.state.curPgy} PGY
+            </div>
+            <div >
+              <div style = {{background:'#e6ffee', padding:5,marginLeft:10,borderRadius:5}}>
+                {this.state.curRupee} ₹
+              </div>
+            </div>
           </div>
           <div style={{flex:5,minWidth:350,margin:"8px auto"}}>
-           <input type="text" value={this.state.addRupee} onChange={this.handleChange} name="addRupee"/>
-            ₹
-          </div>
+            <div style = {{padding:5,marginLeft:10,borderRadius:5,marginBottom:7}}>
+              <b>Add Money</b>
+            </div>
+            <div style={{marginBottom:7}}>
+              <input type="text" value={this.state.addPgy} onChange={this.handleChange} name="addPgy"/>
+                PGY
+              </div>
+              <div >
+              <input type="text" value={this.state.addRupee} onChange={this.handleChange} name="addRupee"/>
+                ₹
+              </div>
+            </div>
           
-          <div style={{flex:2,margin:8,minWidth:100}}>
+          <div style={{flex:2,margin:'auto',minWidth:100}}>
             Add Money
             <img 
               src={AddButton} 

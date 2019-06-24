@@ -43,7 +43,7 @@ class App extends Component{
                     //     console.log(defaultAccount);
                     
                     // })
-                    factoryContract=new _web3.eth.Contract(factory_abi, '0xf80999d738c452e173ef5ffb93f387f9fef604cf', {from:_web3.eth.defaultAccount})   ;
+                    factoryContract=new _web3.eth.Contract(factory_abi, '0x181571163c0583ed01faffda832e9a1ef99216bb', {from:_web3.eth.defaultAccount})   ;
                 
             }
             else 
@@ -69,7 +69,7 @@ class App extends Component{
             );
     }
     else if(this.state.thisAccount && this.state.ca && dealContract){
-      return (<div><Main  dealContract={dealContract}  thisAccount={this.state.thisAccount}  /></div>)
+      return (<div><Main  dealContract={dealContract}  thisAccount={this.state.thisAccount} ca={this.state.ca}  /></div>)
     }
     else
      return ( <p>Loading ... </p> )
