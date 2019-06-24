@@ -16,7 +16,7 @@ i.e
 
 **How to use** :
 
-1. install metmask extension on your browser.
+1. install metmask extension on your browser. link **https://metamask.io/**
 2. choose ropsten network on your metamsk.
 3. Go to metmask->menu->add token ->custom token :
     paste this address  0xaf13a1579a45c0b3888efd6c59161dc17ffefb06
