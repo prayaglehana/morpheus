@@ -167,6 +167,7 @@ class Transactions extends React.Component {
             eth2usd:0
         }
         this.setEventListeners=this.setEventListeners.bind(this);
+        this.requestTokens=this.requestTokens.bind(this);
        
     }
     async componentDidMount(){
@@ -212,6 +213,10 @@ class Transactions extends React.Component {
      
     }
    
+    requestTokens(){
+      this.props.factoryContract.methods.requestTokens( )
+      .send({from:this.props.thisAccount}).then((err,res)=>console.log('submitted request'));
+    }
 
 
     handleChange = name => event => {
@@ -236,9 +241,14 @@ class Transactions extends React.Component {
                 <div style={{textAlign:'center',fontFamily:'roboto'}}>
                     <h1>
                         All deals
+                       
                     </h1>
+                    <p>Published on Ropsten Network</p>
+                    <p>PGY Token Contract Address : 0xaf13a1579a45c0b3888efd6c59161dc17ffefb06</p>
                 </div>
+                
                 <Paper className={classes.root}>
+                
                   <TextField
                         required
                         id="standard---placeholder"
@@ -256,6 +266,14 @@ class Transactions extends React.Component {
                     >
                        Search
                     </Button>
+                    <Button variant="contained" 
+                        className={classes.button}
+                        onClick={() => {this.requestTokens();  }}
+                        color = "secondary"
+                    >
+                       Request Piggy Token 
+                    </Button>
+                    
                 </Paper>
                 <Paper className={classes.root}>
                     <h1>
