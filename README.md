@@ -1,5 +1,5 @@
 **Morpheus Decentralized App Build on ethereum**:   
-App allows you to make deals online between two persons 
+App allows you to make deals online between two persons   
 i.e sender : customer requesting service 
 receiver : giving service and accepting token PGY money in return   
 **Features Of the app** :
