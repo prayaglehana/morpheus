@@ -74,7 +74,7 @@ class App extends Component{
       return (<div><Main  dealContract={dealContract}  thisAccount={this.state.thisAccount} ca={this.state.ca}  /></div>)
     }
     else
-     return ( <p>Loading ... ( Please Install Metamask extension First) </p> )
+     return ( <div><a href="https://www.w3schools.com">Please install metamask first !</a> </div>)
     
     
    
