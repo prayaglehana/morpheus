@@ -1,4 +1,4 @@
-Morpheus Decentralized App Build on ethereum :
+Morpheus Decentralized App Build on ethereum :   
 App allows you to make deals online between two persons 
 i.e sender : customer requesting service 
 receiver : giving service and accepting token PGY money in return
@@ -16,10 +16,10 @@ How to use :
 5. click on "Request Piggy Token " button.
     wait until you get 10 PGY in your account
 6. Finally create deal with your partner and add agreement amount in the required balance.
-7. Once contract created table will show you a new contract address linked to you and your customer.
-8. copy it and paste it to search contract contract address.
+7. Once contract is created, All contract table will show you a new contract address linked to you and your customer.
+8. copy it and paste it to search contract address.
 9. A deal contract will open where 
     (i) sender can add money in form of token PGY ( with price linked to live ethereum price).
     (ii) receiver can lock the amount , sender can satisfy the deal.
-    (iii) receiver can finally claim reward and the PGY amount equivalent to the deal agreement amount will be credited in the receiver's             account as pgy tokens.
-    (iv) Later they can exchange it for currency in binance exchange.
+    (iii) receiver can finally claim reward and the PGY amount equivalent to the deal agreement will be credited in the receiver's             account as pgy tokens.
+    (iv) Later they can exchange it for currency in crypto exchange market like binance.
