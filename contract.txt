@@ -1,0 +1,163 @@
+pragma solidity ^0.4.8;
+import "./PGY.sol";
+import "./PiggyBank.sol";
+pragma experimental ABIEncoderV2;
+
+contract Factory {
+    address[] public allDeals;
+    string public b;
+    event contractCreated(uint256 Vold,address receiver,address sender,address newContractAddress,uint256 realrequiredPrice,string category);
+    function createContract (uint256 Vold,address sender,address receiver,uint256 realrequiredPrice,string category) {
+        //require(msg.sender==receiver);
+        address newContract = new Deal(Vold,sender,receiver,realrequiredPrice,category);
+        allDeals.push(newContract);
+        emit contractCreated(Vold,receiver,sender,newContract,realrequiredPrice,category);
+    } 
+
+}
+
+contract Deal {
+    PGY tokenContract;
+    PiggyBank PiggyBankContract;
+    address constant public PiggyBankContractAddress=0xb9c08e6c1bebf1ca6785a5c384c44cedd16afe61;
+   address constant public  tokenContractAddress= 0x4fd97fe30a0a92a49f837a76953fca1effad2902;
+   
+   struct Details { 
+        address receiver ;              
+        address  sender;             
+        string category;
+        string description;
+        uint256 Vold;
+    
+        uint256 curBalanceToken;
+        uint256 realrequiredPrice;
+        uint256 securityDepositToken;
+        uint256 realsecurityDepositPrice;
+    }
+
+  struct  Status { 
+        bool exist;
+        bool secSender;
+        bool secReceiver;
+        bool lock;
+        bool satisfied;
+        bool rewardClaimed;
+
+    }
+    
+     Details details;
+     Status  status;
+    event eventaddmoney(uint256 Vold,address receiver,address sender,uint256 curBalanceToken);
+    event eventSecurityDeposited(uint256 Volds,address sender,address receiver,bool secSender,bool secReceiver);
+    event eventDealLocked(address receiver,address sender,bool lock);
+    event eventupdaterequiredBalance();
+
+
+
+    
+    constructor (uint256 Vold,address sender,address receiver,uint256 realrequiredPrice,string category) public {
+        tokenContract=PGY(tokenContractAddress);
+        PiggyBankContract=PiggyBank(PiggyBankContractAddress);
+        
+        details =Details(receiver,sender,category,"Nothing Specified",Vold,0,realrequiredPrice,0,10000);
+         status =Status(true,false,false,false,false,false);
+        
+    }
+//  function refreshRates(uint256 Vnew) public payable{
+        
+//         if(details.curBalanceToken!=details.requiredToken) {
+//             details.Vold=Vnew;
+//             details.requiredToken=details.realrequiredPrice/details.Vold;
+//         }
+        
+//     }
+     function showDetails() public view returns(Details ){
+            return details;
+        }
+            
+    
+    function updaterequiredBalance(uint256 newRequiredToken,uint256 newrealrequiredPrice){
+       
+        require(msg.sender==details.receiver && !status.lock);
+
+        details.realrequiredPrice=newrealrequiredPrice;
+        emit eventupdaterequiredBalance();
+    }
+    
+    
+    function addmoney(uint256 Vold,uint256 amount) public{
+        require(msg.sender==details.sender);
+        //require(amount==msg.value);
+        tokenContract.transferToken(msg.sender,address(this),amount);
+        
+        details.curBalanceToken=details.curBalanceToken+amount;
+        details.Vold=Vold;
+        emit eventaddmoney(Vold,details.receiver,details.sender,details.curBalanceToken);
+        
+    }
+    
+    function addSecurity(uint256 Volds,uint256 amount){
+         if(msg.sender==details.sender){
+             tokenContract.transferToken(msg.sender,address(this),amount);
+             status.secSender=true;
+             emit eventSecurityDeposited(Volds,details.sender,details.receiver,status.secSender,status.secReceiver);
+        }
+        else if(msg.sender==details.receiver) {
+             tokenContract.transferToken(msg.sender,address(this),amount);
+             status.secReceiver=true;
+                emit eventSecurityDeposited(Volds,details.sender,details.receiver,status.secSender,status.secReceiver);
+        }
+       
+    }
+    function lockDeal() public{
+        require(msg.sender==details.receiver);
+        require(status.secSender && status.secReceiver);
+        status.lock=true;
+        emit eventDealLocked(details.receiver,details.sender,true);
+        
+    }
+    function unlockDeal() public{
+        require(msg.sender==details.receiver);
+        require(status.secSender && status.secReceiver);
+        status.lock=false;
+        emit eventDealLocked(details.receiver,details.sender,false);
+    }
+   function satisfyDeal() public{
+        require(msg.sender==details.sender && status.lock);
+        status.satisfied=true;
+        emit eventDealLocked(details.receiver,details.sender,true);
+        
+    }
+
+  function claimReward(uint256 Vnew,bool useBank) public payable{
+       
+       require(msg.sender==details.receiver && status.satisfied);
+       require(!status.rewardClaimed);
+       
+       uint256 toGet=details.curBalanceToken;
+       if(useBank){
+                 if(Vnew>details.Vold){
+                     uint256 pushToken= (details.realsecurityDepositPrice/details.Vold)-(details.realsecurityDepositPrice/Vnew);
+                     toGet=toGet-pushToken;
+                     PiggyBankContract.pushedTokens(pushToken);
+                  }
+                  else{
+                      uint256 requestToken= (details.realsecurityDepositPrice/Vnew)-(details.realsecurityDepositPrice/details.Vold);
+                      toGet=toGet+requestToken;
+                     PiggyBankContract.requestedTokens(requestToken);
+                     
+                  }
+       }
+
+         tokenContract.transferToken(address(this),msg.sender,toGet);
+         status.rewardClaimed=true;
+         
+    
+    }
+ function refundSecurity() public payable{
+     require(status.satisfied);
+     tokenContract.transferToken(address(this),msg.sender,details.securityDepositToken);
+ }
+    
+    
+}

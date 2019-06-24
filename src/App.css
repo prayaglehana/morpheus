@@ -1,0 +1,215 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background: rgb(234, 240, 241);
+  font-family: 'roboto';
+}
+.top-section{
+  background-color: #90acd1;
+  padding: 10px 0px;
+  border-radius: 5px;
+  margin: 10px;
+  flex:1;
+}
+.sender-receiver{
+  background-color: #e0e0e0;
+  padding-top: 10px;
+  padding-bottom:40px;
+  border-radius: 5px;
+  margin: 0px 10px;
+  flex:1;
+  display: flex;
+  flex-wrap: wrap;
+}
+.sender-receiver div{
+  flex:1;
+  min-width: 400px;
+  margin:10px auto;
+}
+svg{
+  fill:black;
+  transition: all 0.2s;
+}
+svg:hover{
+  fill:#413f3f;
+  
+}
+.add-money{
+  background-color:#FBD28B;
+  padding: 15px 0px 30px 0px;
+  border-radius: 5px;
+  margin: 10px;
+  flex:1;
+  display: flex;
+  flex-wrap: wrap
+}
+
+input{
+  border:none;
+  padding: 8px;
+  border-radius: 5px;
+  margin-right:10px; 
+  margin-left:10px; 
+  max-width: 250px
+}
+
+.deal{
+  background-color: #DAE0E2;
+  padding: 10px 0px;
+  border-radius: 5px;
+  margin: 10px;
+  flex:1;
+  flex-direction: row;
+  display:flex;
+  flex-wrap: wrap;
+}
+
+.deal .issue{
+  flex:6;
+  display:flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 5px;
+  margin: 10px 10px 10px 20px;
+  padding: 10px;
+  min-height: 200px;
+  min-width:400px;
+}
+
+.issue div{
+  flex:1
+}
+
+button{
+  width:150px;
+  background: #E71C23;
+  padding: 10px;
+  margin:auto;
+  border: none;
+  border-radius: 5px;
+  color:white;
+  font-weight: 100;
+  font-size: 15px;
+  transition: all 0.5s;
+}
+button:hover{
+  cursor: pointer;
+  background: #f4511e;
+}
+
+@media(max-width:850px){
+  .add-money{
+    flex-direction: column
+  }
+}
+
+@media(max-width:620px){
+  .hide1{
+    display: none
+  }
+  .deal-options2 div{
+    margin-top:10px;
+    margin-bottom: 10px;
+  }
+}
+
+.deal .deal-options{
+  flex:8;
+  display:flex;
+  flex-direction: row;
+  background-color: #8f8b8b;
+  border-radius: 5px;
+  margin: 10px 20px;
+  padding: 10px;
+  min-height: 200px;
+  flex-wrap: wrap
+}
+
+.deal-options1{
+  background: transparent;
+  padding:10px;
+  display: flex;
+  flex-direction: column;
+  flex: 4;
+  justify-content: space-evenly;
+  min-width: 300px;
+}
+
+.deal-options1 div{
+  margin-top:15px
+}
+
+.deal-options1 button{
+  margin-top:20px
+}
+.deal-options2{
+  background: white;
+  padding:10px;
+  display: flex;
+  flex-direction: column;
+  flex:5;
+  border-radius: 5px;
+  justify-content: space-evenly;
+  min-width:160px
+}
+
+
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.rotating {
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+}
+
+.description{
+  background-color: #fff;
+  padding: 10px 0px;
+  border-radius: 5px;
+  margin: 10px;
+  flex:1;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+@media(max-width:500px){
+  .issue{
+    min-width: 200px
+  }
+}
+
+@media(min-width:600px){
+  .deal-options{
+    min-width: 540px;
+  }
+}

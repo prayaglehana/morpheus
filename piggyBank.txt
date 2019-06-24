@@ -1,0 +1,53 @@
+pragma solidity ^0.4.21;
+
+import "./PGY.sol";
+
+contract PiggyBank{
+     PGY tokenContract;
+     address[] public shareHolders;
+     mapping(address => uint256) public shares;
+     mapping(address => uint256) public balances;
+     uint public totalTokens;
+     
+     
+   address constant public  tokenContractAddress= 0x8062CcF1dD3fC509200D445D922B60c794242630;
+    
+    
+  constructor () public{
+        address ca=0x8062CcF1dD3fC509200D445D922B60c794242630;
+         tokenContract= PGY(ca);
+        
+    }
+    function getShare() public view returns(uint256){
+        return shares[msg.sender];
+    }
+    function getTokenBalance() public view returns(uint256){
+        return (shares[msg.sender]*totalTokens)/100;
+    }
+    function refundTokenBalance(uint256 s) public view returns(uint256){
+        require(s<=shares[msg.sender]);
+        shares[msg.sender]=shares[msg.sender]-s;
+        
+        tokenContract.transferToken(address(this),msg.sender,s*totalTokens);
+       
+    }
+    function depositTokens(uint256 t){
+        tokenContract.transferToken(msg.sender,address(this),t);
+        totalTokens=totalTokens+t;
+        shares[msg.sender]=shares[msg.sender]+((t*100)/totalTokens);
+      
+        
+    }
+    function requestedTokens(uint256 t){
+        totalTokens=totalTokens-t;
+        tokenContract.transferToken(address(this),msg.sender,t);
+    }
+    function pushedTokens(uint256 t){
+          totalTokens=totalTokens-t;
+         tokenContract.transferToken(msg.sender,address(this),t);
+         
+    }
+    
+
+}
+
