@@ -1,68 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Morpheus Decentralized App Build on ethereum :
+App allows you to make deals online between two persons 
+i.e sender : customer requesting service 
+receiver : giving service and accepting token PGY money in return
+Features Of the app :
+1. allows receiver to lock the service money so that neither receiver nor sender can take it back.
+2. Once deal is satisfied by the sender , receiver can then claim it as a reward
+3. The app is completely decentralized , with 0% trust issues.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+How to use :
+1. install metmask extension on your browser.
+2. choose ropsten network on your metamsk.
+3. Go to metmask->menu->add token ->custom token :
+    paste this address  0xaf13a1579a45c0b3888efd6c59161dc17ffefb06
+4. Go to https://ddeals.herokuapp.com and make sure your metamask is connected to ropsten network.
+5. click on "Request Piggy Token " button.
+    wait until you get 10 PGY in your account
+6. Finally create deal with your partner and add agreement amount in the required balance.
+7. Once contract created table will show you a new contract address linked to you and your customer.
+8. copy it and paste it to search contract contract address.
+9. A deal contract will open where 
+    (i) sender can add money in form of token PGY ( with price linked to live ethereum price).
+    (ii) receiver can lock the amount , sender can satisfy the deal.
+    (iii) receiver can finally claim reward and the PGY amount equivalent to the deal agreement amount will be credited in the receiver's             account as pgy tokens.
+    (iv) Later they can exchange it for currency in binance exchange.
