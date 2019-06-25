@@ -157,8 +157,8 @@ class Transactions extends React.Component {
 
               ],
             balance:0,
-            receiver:'0x32450c9161553Fb50e8e5D9B0A281bb1CD58a2a7',
-            sender:'0xC4ad5E50BA51a94cA71bB80E9379b382E054093d',
+            receiver:'',
+            sender:'',
             category:'Rent',
             contractAddressToBeSearched: '',
             page:0,
