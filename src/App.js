@@ -45,7 +45,7 @@ class App extends Component{
                     //     console.log(defaultAccount);
                     
                     // })
-                    factoryContract=new _web3.eth.Contract(factory_abi, '0xfd47fa890cff28a4ad101cb67a21745ee19afcd8', {from:_web3.eth.defaultAccount})   ;
+                    factoryContract=new _web3.eth.Contract(factory_abi, '0xdb6cb729c77054b0ba3dbfa1bbfaf4ccf51f4560', {from:_web3.eth.defaultAccount})   ;
                 
             }
             else 

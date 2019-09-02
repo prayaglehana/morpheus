@@ -244,7 +244,7 @@ class Transactions extends React.Component {
                        
                     </h1>
                     <p>Published on Ropsten Network</p>
-                    <p>PGY Token Contract Address : 0xaf13a1579a45c0b3888efd6c59161dc17ffefb06</p>
+                    <p>PGY Token Contract Address : 0x603cdc36d6e16696099a72162724ff38419afb57</p>
                 </div>
                 
                 <Paper className={classes.root}>

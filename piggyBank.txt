@@ -5,12 +5,14 @@ import "./PGY.sol";
 contract PiggyBank{
      PGY tokenContract;
      address[] public shareHolders;
-     mapping(address => uint256) public shares;
-     mapping(address => uint256) public balances;
-     uint public totalTokens;
      
      
-   address constant public  tokenContractAddress= 0x8062CcF1dD3fC509200D445D922B60c794242630;
+     uint256 EM; // Exchange Module (total tokens)
+     uint256 CM; // Contribution module ( total tokens)
+     
+     mapping(address => uint256) public CM_SHARE; //shares in CM ( token )
+   
+  // address constant public  tokenContractAddress= 0x708c3d8f7f12de6bbf4cca05f9a8e90a9a84f839;
     
     
   constructor () public{
@@ -19,31 +21,32 @@ contract PiggyBank{
         
     }
     function getShare() public view returns(uint256){
-        return shares[msg.sender];
+        return CM_SHARE[msg.sender]*100/CM;  // % Contribution
     }
     function getTokenBalance() public view returns(uint256){
-        return (shares[msg.sender]*totalTokens)/100;
+        return (CM_SHARE[msg.sender]);
     }
-    function refundTokenBalance(uint256 s) public view returns(uint256){
-        require(s<=shares[msg.sender]);
-        shares[msg.sender]=shares[msg.sender]-s;
-        
-        tokenContract.transferToken(address(this),msg.sender,s*totalTokens);
+    function claimTokenBalance(uint256 amnt) public view returns(uint256){
+        require(amnt<=CM_SHARE[msg.sender]);
+        require(CM>=EM);
+        uint256 toGet=(amnt*(CM+EM))/CM;
+        CM_SHARE[msg.sender]=CM_SHARE[msg.sender]-amnt;
+        EM=EM-(toGet-amnt);
+        tokenContract.transferToken(address(this),msg.sender,toGet);
        
     }
     function depositTokens(uint256 t){
         tokenContract.transferToken(msg.sender,address(this),t);
-        totalTokens=totalTokens+t;
-        shares[msg.sender]=shares[msg.sender]+((t*100)/totalTokens);
-      
-        
+        CM=CM+t;
+        CM_SHARE[msg.sender]=CM_SHARE[msg.sender]+t;
+     
     }
     function requestedTokens(uint256 t){
-        totalTokens=totalTokens-t;
+        EM=EM-t;
         tokenContract.transferToken(address(this),msg.sender,t);
     }
     function pushedTokens(uint256 t){
-          totalTokens=totalTokens-t;
+          EM=EM+t;
          tokenContract.transferToken(msg.sender,address(this),t);
          
     }
